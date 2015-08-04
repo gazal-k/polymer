@@ -1,6 +1,6 @@
 BUILD LOG
 ---------
-Build Time: 2015-08-04T11:51:02+0530
+Build Time: 2015-08-04T14:33:19+0530
 
 NODEJS INFORMATION
 ==================
@@ -17,10 +17,10 @@ polyclean: 1.2.0
 
 REPO REVISIONS
 ==============
-polymer: cb0e21dc4b4a289ae7cb67631cb8c83e2a455fdc
+polymer: 54fa093a7fb3c135ed5eb10e999e506f76acf1ea
 
 BUILD HASHES
 ============
 polymer-mini.html: a924bf54170d0996eb3bad021bc3fd3c065f0bb3
 polymer-micro.html: a8c50d61878b723e669089d595122205a453a74a
-polymer.html: a3cf28fda0e5049447840032531a8845f9f81c84
+polymer.html: e2188bf09c4f27404391d9861ba239eba220ac47

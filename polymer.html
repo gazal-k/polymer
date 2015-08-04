@@ -4190,4 +4190,72 @@ this._children = Array.prototype.slice.call(this.root.childNodes);
 this._insertChildren();
 this.fire('dom-change');
 }
+});
+Polymer({
+is: 'dom-bindref',
+extends: 'template',
+properties: {
+ref: {
+type: String,
+observer: '_refChanged'
+},
+bind: {
+type: Object,
+observer: '_bindChanged'
+},
+as: {
+type: String,
+value: 'item'
+}
+},
+behaviors: [Polymer.Templatizer],
+ready: function () {
+this.templatize(this);
+},
+attached: function () {
+return this._stamp();
+},
+detached: function () {
+return this._removeChildren();
+},
+_refChanged: function (newRef, oldRef) {
+if (oldRef) {
+this._removeChildren();
+return this._stamp();
+}
+},
+_bindChanged: function (newBind, oldBind) {
+if (oldBind) {
+this._removeChildren();
+return this._stamp();
+}
+},
+_stamp: function () {
+var root, template, templateRoot, bind = {};
+this._parent = Polymer.dom(this).parentNode;
+root = this._parent;
+while (Polymer.dom(root).parentNode) {
+root = Polymer.dom(root).parentNode;
+}
+template = Polymer.dom(root).querySelector('template#' + this.ref);
+if (!template) {
+template = document.querySelector('template#' + this.ref);
+}
+bind[this.as] = this.bind;
+templateRoot = template.stamp(bind).root;
+this._children = Array.prototype.slice.call(templateRoot.childNodes);
+return Polymer.dom(this._parent).insertBefore(templateRoot, this);
+},
+_removeChildren: function () {
+var child, i, len, ref, results;
+if (this._children) {
+ref = this._children;
+results = [];
+for (i = 0, len = ref.length; i < len; i++) {
+child = ref[i];
+results.push(Polymer.dom(this._parent).removeChild(child));
+}
+return results;
+}
+}
 });</script>
