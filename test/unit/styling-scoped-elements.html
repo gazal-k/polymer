@@ -1,3 +1,59 @@
+<dom-module id="x-keyframes">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        border: 10px solid blue;
+        left: 0px;
+        /* Prefix required by Safari <= 8 */
+        -webkit-animation-duration: 0.3s;
+        animation-duration: 0.3s;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+      }
+
+      :host([animated]) {
+        /* Prefix required by Safari <= 8 */
+        -webkit-animation-name: x-keyframes-animation;
+        animation-name: x-keyframes-animation;
+      }
+
+      /* Prefix required by Safari <= 8 */
+      @-webkit-keyframes x-keyframes-animation {
+        0% {
+          left: var(--keyframes0, 0px);
+        }
+
+        100% {
+          left: var(--keyframes100, 10px);
+        }
+      }
+      @keyframes x-keyframes-animation {
+        0% {
+          left: var(--keyframes0, 0px);
+        }
+
+        100% {
+          left: var(--keyframes100, 10px);
+        }
+      }
+    </style>
+    x-keyframes
+  </template>
+  <script>
+    Polymer({
+      is: 'x-keyframes',
+      properties: {
+        animated: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
+      }
+    });
+  </script>
+</dom-module>
 <dom-module id="x-gchild">
   <template>
     <!-- styles can be in templates -->
@@ -70,10 +126,15 @@
     :host {
       display: block;
       border: 1px solid orange;
+      --keyframes100: 100px;
     }
 
     :host(.wide) {
       border-width: 2px;
+    }
+
+    #keyframes2.special {
+      --keyframes100: 200px;
     }
 
     #simple {
@@ -169,6 +230,8 @@
       <circle id="circle" cx="12" cy="12" r="10"></circle>
     </svg>
     <x-scope-class id="scopeClass"></x-scope-class>
+    <x-keyframes id="keyframes"></x-keyframes>
+    <x-keyframes id="keyframes2"></x-keyframes>
   </template>
 </dom-module>
 <script>
@@ -440,5 +503,42 @@
 <script>
   Polymer({
     is: 'x-overriding'
+  });
+</script>
+
+<dom-module id="x-attr-selector">
+  <template>
+    <style>
+      #foo1 ~ #bar1 {
+        border: 2px solid red;
+      }
+
+      #foo1 ~ #bar1 ~ #foo2[attr~=foo2] ~ #bar2[attr~=bar2]  {
+        border: 4px solid red;
+      }
+
+      #foo1 ~ #bar1 ~ #foo2[attr~=foo2] ~ #bar2[attr~=bar2] ~ #foo3[attr~=foo3][a~=a] ~ #bar3[attr~=bar3][a~=a] {
+        border: 6px solid red;
+      }
+    </style>
+    <div id="foo1"></div>
+    <div id="bar1">bar1</div>
+    <div id="foo2" attr="foo2"></div>
+    <div id="bar2" attr="bar2">bar2</div>
+    <div id="foo3" attr="foo3" a="a"></div>
+    <div id="bar3" attr="bar3" a="a">bar3</div>
+   
+  </template>
+  <script>
+    Polymer({is: 'x-attr-selector'});
+  </script>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'x-scope-no-class',
+    ready: function() {
+      this.scopeSubtree(this, true);
+    }
   });
 </script>
